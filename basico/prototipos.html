@@ -34,17 +34,44 @@
 			new Persona("María", "García")
 		];
 		personas.push(new Persona("Carlos", "Ramírez"));
+		personas.push({
+			id: 4,
+			nombre: 'José',
+			apellido: 'No tiene',
+			reir: function() {
+				document.writeln('No sólo Pedro rie');
+			},
+			getNombre: function() {
+				return this.nombre;
+			},
+			toString: function() {
+				return "no hay";
+			}
+		});
+		var p3 = {
+			id: 4,
+			nombre: 'Elena',
+			apellido: 'No tiene',
+			toString: function() {
+				return "no hay";
+			}
+		};
+		p3.reir = p1.reir;
+		personas.push(p3);
 
 		Persona.prototype.saludar = function() {
 			document.writeln("Hola " + this.getNombre() + "<br>");
 		}
 	
 		for (var i in personas)  {
-			document.writeln(personas[i] + "<br>");
+			document.writeln(personas[i] + "<br>"); // toString()
 			document.writeln("nombre = " + personas[i].getNombre() + "<br>");
+			if (typeof personas[i].nombre != 'undefined')
+				document.writeln("this.nombre = " + personas[i].nombre + "<br>");
 			if (typeof personas[i].reir != 'undefined')
 				personas[i].reir();
-			personas[i].saludar();
+			if (typeof personas[i].saludar != 'undefined')
+				personas[i].saludar();
 			personas[i].llorar = miLlorar;
 			personas[i].llorar();
 	
