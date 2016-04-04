@@ -29,7 +29,12 @@ function ProductoUtil() {
 }
 ```
 
-3.- Implementar el CRUD+ de producto siguiendo el mockup (ejercicio2.pdf)
+3.- Implementar el CRUD+ de producto siguiendo el mockup (ejercicio2.pdf). Seguir el orden:
+- Listar
+- Agregar
+- Eliminar
+- Mostrar
+- Modificar
 
 4.- Eliminar la clase Producto. Refactorizar el código para que ahora los objetos de datos sigan el formato JSON. Por ejemplo:
 

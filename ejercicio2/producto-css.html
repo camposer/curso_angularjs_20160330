@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<style>
+			/* selectores de etiqueta/elemento */
+			h1 {
+				text-align: center;
+			}
+
+			/* selectores de clase/tipo */
+			.tabla-centrada {
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.tabla-datos a {
+				color: black;
+			}
+
+			/* selectores de identificador */
+			#tabla-form input[type=text],
+			#tabla-form input[type=number] {
+				width: 10em;
+			}
+
+
+			/* pseudo selectores */
+			#tabla-form tr:nth-child(3) td {
+				text-align: center;
+			}
+
+			.tabla-datos tr:first-child th {
+				background-color: darkgray;
+			}
+
+			.tabla-datos tr:nth-child(odd) td {
+				background-color: lightgray;
+			}
+
+			.tabla-datos tr:nth-child(even) td {
+				background-color: gray;
+			}
+
+			#tabla-productos td:nth-child(1),
+			#tabla-productos td:nth-child(3),
+			#tabla-productos td:nth-child(4),
+			#tabla-productos td:nth-child(5) {
+				text-align: center;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>Productos</h1>
+
+		<table id="tabla-form" class="tabla-centrada">
+			<tr>
+				<td>Nombre:</td>
+				<td><input type="text" name="nombre"></td>
+			</tr>
+			<tr>
+				<td>Precio:</td>
+				<td><input type="number" name="precio"></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<button type="button">Modificar</button>
+					<button type="button">Agregar</button>
+				</td>
+			</tr>
+		</table>
+		<hr>
+		<table id="tabla-productos" class="tabla-centrada tabla-datos">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Precio</th>
+					<th>Mostrar</th>
+					<th>Eliminar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>TV</td>
+					<td>700</td>
+					<td><a href="#">mostrar</a></td>
+					<td><a href="#">eliminar</a></td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>TV</td>
+					<td>700</td>
+					<td><a href="#">mostrar</a></td>
+					<td><a href="#">eliminar</a></td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>TV</td>
+					<td>700</td>
+					<td><a href="#">mostrar</a></td>
+					<td><a href="#">eliminar</a></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</body>
+</html>
