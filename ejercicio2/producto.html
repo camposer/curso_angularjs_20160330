@@ -26,12 +26,58 @@
 					html += '<td>' + p.getId() + '</td>';
 					html += '<td>' + p.getNombre() + '</td>';
 					html += '<td>' + p.getPrecio() + '</td>';
-					html += '<td><a href="#">mostrar</a></td>';
-					html += '<td><a href="#">eliminar</a></td>';
+					html += '<td><a href="#" onclick="mostrar(' + p.getId() + ')">mostrar</a></td>';
+					html += '<td><a href="#" onclick="eliminar(' + p.getId() + ')">eliminar</a></td>';
 					html += '</tr>';
 				}
 
 				document.getElementById('tbodyProductos').innerHTML = html;
+			};
+
+			var eliminar = function(id) {
+				var mensaje = 'Seguro?';
+
+				if (confirm(mensaje) && id) {
+					productoUtil.eliminar(id);
+					imprimir();
+				}
+			};
+
+			var mostrar = function(id) {
+				var p = productoUtil.obtener(id);
+
+				if (p) {
+					document.getElementById('id').value = p.getId();
+					document.getElementById('nombre').value = p.getNombre();
+					document.getElementById('precio').value = p.getPrecio();					
+				}
+			};
+
+			var guardar = function() {
+				var id = document.getElementById('id').value;
+				var nombre = document.getElementById('nombre').value;
+				var precio = document.getElementById('precio').value;
+
+				// TODO Mejorar validaciones
+				if (nombre && precio) {
+					var p = new Producto(nombre, precio);
+
+					if (id) { // Modificar
+						p.setId(id);
+						productoUtil.modificar(p);
+					} else { // Agregar
+						productoUtil.agregar(p);
+					}
+	
+					imprimir();
+					limpiarForm();
+				}
+			};
+
+			var limpiarForm = function() {
+				document.getElementById('id').value = '';
+				document.getElementById('nombre').value = '';
+				document.getElementById('precio').value = '';
 			};
 
 			var init = function() {
@@ -45,6 +91,7 @@
 			<h1>Productos</h1>
 
 			<form class="form-horizontal">
+			  <input type="hidden" id="id">
 			  <div class="form-group">
 			    <label for="nombre" class="col-sm-2 control-label">Nombre</label>
 			    <div class="col-sm-10">
@@ -59,7 +106,7 @@
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <button type="button" class="btn btn-default">Guardar</button>
+			      <button type="button" class="btn btn-default" onclick="javascript:guardar()">Guardar</button>
 			    </div>
 			  </div>
 			</form>
