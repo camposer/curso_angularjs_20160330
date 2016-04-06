@@ -1,0 +1,142 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<script src="js/jquery-1.12.2.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/productoUtil.js"></script>
+		<script>
+			var productoUtil = new ProductoUtil();
+
+			var initProductoUtil = function() {
+				var p = {};
+				p.nombre = 'TV';
+				p['precio'] = 700;
+
+				productoUtil.agregar(p);
+				productoUtil.agregar({ 
+					nombre: 'Cámara', 
+					precio: 500
+				});
+				productoUtil.agregar({
+					nombre: 'PS3', 
+					precio: 350 
+				});
+			};
+
+			var imprimir = function() {
+				var productos = productoUtil.obtenerTodos();
+
+				$('#tabla-productos tbody').empty();
+				for (var i in productos) {
+					var p = productos[i];
+					var tr = $('<tr></tr>');
+					$('<td>' + p.id + '</td>').appendTo(tr);
+					$('<td>' + p.nombre + '</td>').appendTo(tr);
+					$('<td>' + p.precio + '</td>').appendTo(tr);
+					$('<td><a href="#" onclick="mostrar(' + p.id + ')">mostrar</a></td>').appendTo(tr);
+					$('<td><a href="#" onclick="eliminar(' + p.id + ')">eliminar</a></td>').appendTo(tr);
+					$(tr).appendTo('#tabla-productos tbody');
+				}
+
+			};
+
+			var eliminar = function(id) {
+				var mensaje = 'Seguro?';
+
+				if (confirm(mensaje) && id) {
+					productoUtil.eliminar(id);
+					imprimir();
+				}
+			};
+
+			var mostrar = function(id) {
+				var p = productoUtil.obtener(id);
+
+				if (p) {
+					$('#id').val(p.id);
+					$('#nombre').val(p.nombre);
+					$('#precio').val(p.precio);
+				}
+			};
+
+			var guardar = function() {
+				var id = $('#id').val();
+				var nombre = $('#nombre').val();
+				var precio = $('form div:nth-child(2) input[type=number]').val();
+
+				// TODO Mejorar validaciones
+				if (nombre && precio) {
+					var p = {
+						nombre: nombre,
+						'precio': precio
+					};
+
+					if (id) { // Modificar
+						p.id = id;
+						productoUtil.modificar(p);
+					} else { // Agregar
+						productoUtil.agregar(p);
+					}
+	
+					imprimir();
+					limpiarForm();
+				}
+			};
+
+			var limpiarForm = function() {
+				$('#id').val('');
+				$('#nombre').val('');
+				$('#precio').val('');
+			};
+
+			$(document).ready(function() {
+				initProductoUtil();
+				imprimir();
+
+				$('form input[type=button][value=Guardar]').click(guardar);
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Productos</h1>
+
+			<form class="form-horizontal">
+			  <input type="hidden" id="id">
+			  <div class="form-group">
+			    <label for="nombre" class="col-sm-2 control-label">Nombre</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="precio" class="col-sm-2 control-label">Precio</label>
+			    <div class="col-sm-10">
+			      <input type="number" class="form-control" id="precio" placeholder="Precio">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-10">
+			      <input type="button" class="btn btn-default" value='Guardar'>
+			    </div>
+			  </div>
+			</form>
+
+			<hr>
+			<table id="tabla-productos" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nombre</th>
+						<th>Precio</th>
+						<th>Mostrar</th>
+						<th>Eliminar</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
