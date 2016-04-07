@@ -25,19 +25,22 @@
 			};
 
 			var imprimir = function() {
-				var productos = productoUtil.obtenerTodos();
+				var callback = function(productos, status, xhr) {
 
-				$('#tabla-productos tbody').empty();
-				for (var i in productos) {
-					var p = productos[i];
-					var tr = $('<tr></tr>');
-					$('<td>' + p.id + '</td>').appendTo(tr);
-					$('<td>' + p.nombre + '</td>').appendTo(tr);
-					$('<td>' + p.precio + '</td>').appendTo(tr);
-					$('<td><a href="#" onclick="mostrar(' + p.id + ')">mostrar</a></td>').appendTo(tr);
-					$('<td><a href="#" onclick="eliminar(' + p.id + ')">eliminar</a></td>').appendTo(tr);
-					$(tr).appendTo('#tabla-productos tbody');
-				}
+					$('#tabla-productos tbody').empty();
+					for (var i in productos) {
+						var p = productos[i];
+						var tr = $('<tr></tr>');
+						$('<td>' + p.id + '</td>').appendTo(tr);
+						$('<td>' + p.nombre + '</td>').appendTo(tr);
+						$('<td>' + p.precio + '</td>').appendTo(tr);
+						$('<td><a href="#" onclick="mostrar(' + p.id + ')">mostrar</a></td>').appendTo(tr);
+						$('<td><a href="#" onclick="eliminar(' + p.id + ')">eliminar</a></td>').appendTo(tr);
+						$(tr).appendTo('#tabla-productos tbody');
+					}
+				};
+
+				productoUtil.obtenerTodos(callback);
 
 			};
 
