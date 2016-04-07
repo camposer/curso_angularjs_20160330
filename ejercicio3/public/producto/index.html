@@ -32,19 +32,20 @@
 				var mensaje = 'Seguro?';
 
 				if (confirm(mensaje) && id) {
-					productoUtil.eliminar(id);
-					imprimir();
+					productoUtil.eliminar(id, function() {
+						imprimir();	
+					});
 				}
 			};
 
 			var mostrar = function(id) {
-				var p = productoUtil.obtener(id);
-
-				if (p) {
-					$('#id').val(p.id);
-					$('#nombre').val(p.nombre);
-					$('#precio').val(p.precio);
-				}
+				productoUtil.obtener(id, function(p) {
+					if (p) {
+						$('#id').val(p.id);
+						$('#nombre').val(p.nombre);
+						$('#precio').val(p.precio);
+					}					
+				});
 			};
 
 			var guardar = function() {
