@@ -8,8 +8,12 @@ function ProductoUtil() {
 		}).done(callback);
 	}
 
-	this.agregar = function(p) {
-
+	this.agregar = function(p, callback) {
+		$.ajax(URL_BASE, {
+			type: 'post',
+			data: JSON.stringify(p),
+			contentType: 'application/json'
+		}).done(callback);
 	}
 
 	this.eliminar = function(id) {
@@ -20,5 +24,10 @@ function ProductoUtil() {
 	}
 
 	this.modificar = function(p) {
+		$.ajax(URL_BASE + '/' + p.id, {
+			type: 'put',
+			data: JSON.stringify(p),
+			contentType: 'application/json'
+		}).done(callback);
 	}
 }

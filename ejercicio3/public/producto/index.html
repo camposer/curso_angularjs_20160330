@@ -8,22 +8,6 @@
 		<script>
 			var productoUtil = new ProductoUtil();
 
-			var initProductoUtil = function() {
-				var p = {};
-				p.nombre = 'TV';
-				p['precio'] = 700;
-
-				productoUtil.agregar(p);
-				productoUtil.agregar({ 
-					nombre: 'Cámara', 
-					precio: 500
-				});
-				productoUtil.agregar({
-					nombre: 'PS3', 
-					precio: 350 
-				});
-			};
-
 			var imprimir = function() {
 				var callback = function(productos, status, xhr) {
 
@@ -75,15 +59,17 @@
 						'precio': precio
 					};
 
+					var callback = function() {
+						imprimir(); // get de nuevo
+						limpiarForm();
+					};
+
 					if (id) { // Modificar
 						p.id = id;
-						productoUtil.modificar(p);
+						productoUtil.modificar(p, callback);
 					} else { // Agregar
-						productoUtil.agregar(p);
+						productoUtil.agregar(p, callback);
 					}
-	
-					imprimir();
-					limpiarForm();
 				}
 			};
 
@@ -94,7 +80,6 @@
 			};
 
 			$(document).ready(function() {
-				initProductoUtil();
 				imprimir();
 
 				$('form input[type=button][value=Guardar]').click(guardar);
