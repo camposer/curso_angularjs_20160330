@@ -1,0 +1,87 @@
+<html ng-app="app">
+	<head>
+		<meta charset="utf-8">
+		<style>
+			.impar {
+				background-color: gray;
+			}
+
+			.par {
+				background-color: lightgray ;
+			}
+		</style>
+	</head>
+	<body ng-controller="ProductoCtrl as ctrl">
+		<table>
+			<tr>
+				<td>
+					Nombre:
+					<input type="text" ng-model="ctrl.producto.nombre">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Precio:
+					<input type="number" ng-model="ctrl.producto.precio">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button type="button" ng-click="ctrl.agregar()">Agregar</button>
+				</td>
+			</tr>
+		</table>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Precio</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="p in ctrl.productos | orderBy:'-precio'" ng-class="{ impar: p.id % 2 == 0, par: p.id % 2 != 0 }">
+					<td>{{p.id}}</td>
+					<td>{{p.nombre}}</td>
+					<td>{{p.precio | number:2 | currency:'€' }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<script src="angular.js"></script>
+		<script>
+			var app = angular.module('app', []);
+
+			app.controller('ProductoCtrl', function() {
+				this.producto = {
+					nombre: 'NA',
+					precio: 99
+				};
+
+				this.productos = [
+					{ 
+						id: 1, 
+						nombre: 'TV', 
+						precio: 700
+					},
+					{ 
+						id: 2, 
+						nombre: 'Cámara', 
+						precio: 300
+					},
+					{ 
+						id: 3, 
+						nombre: 'PS3', 
+						precio: 300
+					}
+				];
+
+				this.agregar = function() {
+					var p = angular.copy(this.producto); // crea un clon del objeto
+					this.productos.push(p); 
+				};
+			});
+		</script>		
+	</body>
+</html>
