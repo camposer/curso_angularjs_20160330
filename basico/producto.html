@@ -16,13 +16,13 @@
 			<tr>
 				<td>
 					Nombre:
-					<input type="text" ng-model="ctrl.producto.nombre">
+					<input type="text" id="nombre" ng-model="ctrl.producto.nombre">
 				</td>
 			</tr>
 			<tr>
 				<td>
 					Precio:
-					<input type="number" ng-model="ctrl.producto.precio">
+					<input type="number" id="precio" ng-model="ctrl.producto.precio">
 				</td>
 			</tr>
 			<tr>
@@ -38,6 +38,8 @@
 					<th>Id</th>
 					<th>Nombre</th>
 					<th>Precio</th>
+					<th>Mostrar</th>
+					<th>Eliminar</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,6 +47,8 @@
 					<td>{{p.id}}</td>
 					<td>{{p.nombre}}</td>
 					<td>{{p.precio | number:2 | currency:'€' }}</td>
+					<td><a href data-ng-click="ctrl.mostrar(p)">mostrar</a></td>
+					<td><a href ng-click="ctrl.eliminar(p.id)">eliminar</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -54,12 +58,14 @@
 			var app = angular.module('app', []);
 
 			app.controller('ProductoCtrl', function() {
-				this.producto = {
+				var self = this;
+
+				self.producto = {
 					nombre: 'NA',
 					precio: 99
 				};
 
-				this.productos = [
+				self.productos = [
 					{ 
 						id: 1, 
 						nombre: 'TV', 
@@ -77,10 +83,34 @@
 					}
 				];
 
-				this.agregar = function() {
-					var p = angular.copy(this.producto); // crea un clon del objeto
-					this.productos.push(p); 
+				var buscarPos = function(id) {
+					for (var i in self.productos) {
+						if (self.productos[i].id == id)
+							return i;
+					}
 				};
+
+				self.mostrar = function(p) {
+					self.producto = p;
+				};
+
+				self.eliminar = function(id) {
+					var pos = buscarPos(id);
+					if (pos)
+						self.productos.splice(pos, 1);
+				};
+
+				self.agregar = function() {
+					var p = angular.copy(self.producto); // crea un clon del objeto
+					// var p = {
+					// 	nombre: document.getElementById('nombre').value,
+					// 	precio: document.getElementById('precio').value
+					// };
+
+					self.productos.push(p); 
+				};	
+
+				// TODO Implementar: eliminar, mostrar y modificar
 			});
 		</script>		
 	</body>
