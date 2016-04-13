@@ -9,28 +9,40 @@
 			.par {
 				background-color: lightgray ;
 			}
+
+			.ng-invalid {
+				border-color: red;
+			}
+
+			.ng-valid {
+				border-color: green;
+			}			
 		</style>
 	</head>
 	<body ng-controller="ProductoCtrl as ctrl">
-		<table>
-			<tr>
-				<td>
-					Nombre:
-					<input type="text" id="nombre" ng-model="ctrl.producto.nombre">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Precio:
-					<input type="number" id="precio" ng-model="ctrl.producto.precio">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<button type="button" ng-click="ctrl.agregar()">Agregar</button>
-				</td>
-			</tr>
-		</table>
+		<form name="form" ng-submit="form.$valid && ctrl.agregar()" novalidate>
+			<table>
+				<tr>
+					<td>
+						Nombre:
+						<input type="text" id="nombre" name="nombre" ng-model="ctrl.producto.nombre" required>
+						<span ng-show="form.nombre.$invalid" style="background-color: red">Nombre inválido</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Precio:
+						<input type="number" id="precio" name="precio" ng-model="ctrl.producto.precio" required min="0" max="100">
+						<span ng-show="form.precio.$invalid"  style="background-color: red">Precio inválido</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button>Agregar</button>
+					</td>
+				</tr>
+			</table>
+		</form>
 
 		<table>
 			<thead>

@@ -1,113 +1,29 @@
-<html>
+<html ng-app="app">
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<script src="js/jquery-1.12.2.js"></script>
-		<script src="js/bootstrap.js"></script>
-		<script src="js/productoUtil.js"></script>
-		<script>
-			var productoUtil = new ProductoUtil();
-
-			var imprimir = function() {
-				var callback = function(productos, status, xhr) {
-
-					$('#tabla-productos tbody').empty();
-					for (var i in productos) {
-						var p = productos[i];
-						var tr = $('<tr></tr>');
-						$('<td>' + p.id + '</td>').appendTo(tr);
-						$('<td>' + p.nombre + '</td>').appendTo(tr);
-						$('<td>' + p.precio + '</td>').appendTo(tr);
-						$('<td><a href="#" onclick="mostrar(' + p.id + ')">mostrar</a></td>').appendTo(tr);
-						$('<td><a href="#" onclick="eliminar(' + p.id + ')">eliminar</a></td>').appendTo(tr);
-						$(tr).appendTo('#tabla-productos tbody');
-					}
-				};
-
-				productoUtil.obtenerTodos(callback);
-
-			};
-
-			var eliminar = function(id) {
-				var mensaje = 'Seguro?';
-
-				if (confirm(mensaje) && id) {
-					productoUtil.eliminar(id, function() {
-						imprimir();	
-					});
-				}
-			};
-
-			var mostrar = function(id) {
-				productoUtil.obtener(id, function(p) {
-					if (p) {
-						$('#id').val(p.id);
-						$('#nombre').val(p.nombre);
-						$('#precio').val(p.precio);
-					}					
-				});
-			};
-
-			var guardar = function() {
-				var id = $('#id').val();
-				var nombre = $('#nombre').val();
-				var precio = $('form div:nth-child(2) input[type=number]').val();
-
-				// TODO Mejorar validaciones
-				if (nombre && precio) {
-					var p = {
-						nombre: nombre,
-						'precio': precio
-					};
-
-					var callback = function() {
-						imprimir(); // get de nuevo
-						limpiarForm();
-					};
-
-					if (id) { // Modificar
-						p.id = id;
-						productoUtil.modificar(p, callback);
-					} else { // Agregar
-						productoUtil.agregar(p, callback);
-					}
-				}
-			};
-
-			var limpiarForm = function() {
-				$('#id').val('');
-				$('#nombre').val('');
-				$('#precio').val('');
-			};
-
-			$(document).ready(function() {
-				imprimir();
-
-				$('form input[type=button][value=Guardar]').click(guardar);
-			});
-		</script>
+		<link rel="stylesheet" href="vendor/css/bootstrap.css">
 	</head>
-	<body>
+	<body ng-controller="ProductoCtrl as ctrl">
 		<div class="container">
 			<h1>Productos</h1>
 
-			<form class="form-horizontal">
+			<form class="form-horizontal" name="form" ng-submit="form.$valid && ctrl.guardar()" novalidate>
 			  <input type="hidden" id="id">
 			  <div class="form-group">
 			    <label for="nombre" class="col-sm-2 control-label">Nombre</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+			      <input type="text" class="form-control" id="nombre" placeholder="Nombre" ng-model="ctrl.producto.nombre">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="precio" class="col-sm-2 control-label">Precio</label>
 			    <div class="col-sm-10">
-			      <input type="number" class="form-control" id="precio" placeholder="Precio">
+			      <input type="number" class="form-control" id="precio" placeholder="Precio" ng-model="ctrl.producto.precio">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <input type="button" class="btn btn-default" value='Guardar'>
+			      <input type="submit" class="btn btn-default" value='Guardar'>
 			    </div>
 			  </div>
 			</form>
@@ -123,9 +39,28 @@
 						<th>Eliminar</th>
 					</tr>
 				</thead>
+					<tr ng-repeat="p in ctrl.productos">
+						<td>{{::p.id}}</td>
+						<td>{{::p.nombre}}</td>
+						<td>{{::p.precio}}</td>
+						<td><a href ng-click="ctrl.mostrar(p)">mostrar</a></td>
+						<td><a href ng-click="ctrl.eliminar(p.id)">eliminar</a></td>
+					</tr>
 				<tbody>
 				</tbody>
 			</table>
 		</div>
+
+		<!-- Vendor -->
+		<script src="vendor/js/jquery-1.12.2.js"></script>
+		<script src="vendor/js/bootstrap.js"></script>
+		<script src="vendor/js/angular.js"></script>
+
+		<!-- App -->
+		<script src="script/app.js"></script>
+		<script src="script/producto/module.js"></script>
+		<script src="script/producto/controller/producto.js"></script>
+		<script src="script/producto/service/producto.js"></script>
+
 	</body>
 </html>
