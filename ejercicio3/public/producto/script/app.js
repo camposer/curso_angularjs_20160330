@@ -7,7 +7,10 @@
 		.config(function($routeProvider) {
 			$routeProvider
 				.when('/inicio', {
-					template: '<strong>Página de inicio</strong>'
+					templateUrl: 'inicio.html',
+					controller: [ '$rootScope', function($rootScope) {
+						$rootScope.mensaje = 'Inicio';
+					}]
 				});
 
 			$routeProvider.otherwise('/inicio');

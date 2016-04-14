@@ -9,6 +9,9 @@
 		$scope.producto = {} // enlazado con el form (opcional)
 		$scope.productos = []; // enlazado con la tabla (opcional)
 
+		$scope.rootScope = $rootScope;
+		$scope.mensaje = 'Producto';
+
 		var listar = function() {
 			var callback = function(res) {
 				$scope.productos = res.data;
