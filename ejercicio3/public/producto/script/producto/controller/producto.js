@@ -3,17 +3,15 @@
 	angular
 		.module('producto')
 		.controller('ProductoCtrl', 
-			[  'ProductoService',  ProductoCtrl ]);
+			[  '$rootScope', '$scope', 'ProductoService',  ProductoCtrl ]);
 
-	function ProductoCtrl(productoService) {
-		var self = this;
-
-		self.producto = {} // enlazado con el form (opcional)
-		self.productos = []; // enlazado con la tabla (opcional)
+	function ProductoCtrl($rootScope, $scope, productoService) {
+		$scope.producto = {} // enlazado con el form (opcional)
+		$scope.productos = []; // enlazado con la tabla (opcional)
 
 		var listar = function() {
 			var callback = function(res) {
-				self.productos = res.data;
+				$scope.productos = res.data;
 			};
 
 			productoService.obtenerTodos(callback);
@@ -21,41 +19,41 @@
 
 		listar();
 
-		self.eliminar = function(id) {
+		$scope.eliminar = function(id) {
 			productoService.eliminar(id, listar);
 		};
 
-		self.mostrar = function(p) {
-			self.producto = p;
+		$scope.mostrar = function(p) {
+			$scope.producto = p;
 		}
 
-		self.guardar = function(form) {
-			self.error = [];
+		$scope.guardar = function(form) {
+			$scope.error = [];
 
 			if (form.nombre.$invalid)
-				self.error.push('Nombre inválido');
+				$scope.error.push('Nombre inválido');
 
 			if (form.precio.$invalid || 
-					self.producto.precio <= 0) {
+					$scope.producto.precio <= 0) {
 
 				form.precio.$invalid = true;
-				self.error.push('Precio inváildo');
+				$scope.error.push('Precio inváildo');
 			}
 
-			if (self.error.length == 0) {
+			if ($scope.error.length == 0) {
 				var success = function() {
-					self.producto = {};
+					$scope.producto = {};
 					listar();
 				};
 
 				var error = function() {
-					self.error.push('Ha ocurrido un error en el servidor');
+					$scope.error.push('Ha ocurrido un error en el servidor');
 				}
 
-				if (self.producto.id) {
-					productoService.modificar(self.producto, success, error);									
+				if ($scope.producto.id) {
+					productoService.modificar($scope.producto, success, error);									
 				} else {
-					productoService.agregar(self.producto, success, error);				
+					productoService.agregar($scope.producto, success, error);				
 				}
 			}
 		}
