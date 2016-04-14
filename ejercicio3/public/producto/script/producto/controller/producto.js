@@ -8,11 +8,12 @@
 	function ProductoCtrl(productoService) {
 		var self = this;
 
-		self.productos = []; // opcional
+		self.producto = {} // enlazado con el form (opcional)
+		self.productos = []; // enlazado con la tabla (opcional)
 
 		var listar = function() {
 			var callback = function(res) {
-				self.productos = res;
+				self.productos = res.data;
 			};
 
 			productoService.obtenerTodos(callback);
@@ -28,13 +29,35 @@
 			self.producto = p;
 		}
 
-		self.guardar = function() {
-			var callback = function() {
-				self.producto = {};
-				listar();
-			};
+		self.guardar = function(form) {
+			self.error = [];
 
-			productoService.agregar(self.producto, callback);
+			if (form.nombre.$invalid)
+				self.error.push('Nombre inválido');
+
+			if (form.precio.$invalid || 
+					self.producto.precio <= 0) {
+
+				form.precio.$invalid = true;
+				self.error.push('Precio inváildo');
+			}
+
+			if (self.error.length == 0) {
+				var success = function() {
+					self.producto = {};
+					listar();
+				};
+
+				var error = function() {
+					self.error.push('Ha ocurrido un error en el servidor');
+				}
+
+				if (self.producto.id) {
+					productoService.modificar(self.producto, success, error);									
+				} else {
+					productoService.agregar(self.producto, success, error);				
+				}
+			}
 		}
 	}
 

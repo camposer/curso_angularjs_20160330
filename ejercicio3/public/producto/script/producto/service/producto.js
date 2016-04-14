@@ -7,16 +7,20 @@
 	function ProductoService($http) {
 		var BASE_URL = '/productos';
 
-		this.obtenerTodos = function(callback) {
-			$http.get(BASE_URL).success(callback);
+		this.obtenerTodos = function(success, error) {
+			$http.get(BASE_URL).then(success, error);
 		}
 
-		this.eliminar = function(id, callback) {
-			$http.delete(BASE_URL + '/' + id).success(callback);
+		this.eliminar = function(id, success, error) {
+			$http.delete(BASE_URL + '/' + id).then(success, error);
 		}
 
-		this.agregar = function(p, callback) {
-			$http.post(BASE_URL, p).success(callback);
+		this.agregar = function(p, success, error) {
+			$http.post(BASE_URL, p).then(success, error);
+		}
+
+		this.modificar = function(p, success, error) {
+			$http.put(BASE_URL + '/' + p.id, p).then(success, error);
 		}
 	}
 
